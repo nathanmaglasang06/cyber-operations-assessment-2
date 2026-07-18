@@ -37,7 +37,18 @@ This might take like 1-2 mins depending on internet speeds
 
 ### Install Dependecies
 
-> sudo apt install docker.io docker-compose-plugin curl git -y
+You can just copy paste this block into terminal (UBUNTU VM) (Mac/Linux Users use your local package managers to install docker)
+
+    sudo apt install curl git -y
+    sudo apt-get update -y
+    sudo apt-get install -y ca-certificates curl gnupg lsb-release
+    sudo install -m 0755 -d /etc/apt/keyrings
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] \
+    https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) stable" \
+    | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+    sudo apt-get update -y
+    sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
 ### Enable Docker
 
