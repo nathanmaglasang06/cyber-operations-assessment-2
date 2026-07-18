@@ -2,7 +2,7 @@
 
 ## Docker Setup
 
-This will work on a standard Ubuntu VM, I would reccomend 12gb ram, and 6 cores if possible, where on my arch system it takes around 10 gb ram to run including base OS
+This will work on a standard Ubuntu VM, I would reccomend minimum 8gb ram recommended 12gb ram, and 6 cores if possible, where on my arch system it takes around 10 gb ram to run including base OS
 
 When you want to stop working there is no need to do docker down or anything, just suspend the ubuntu vm that will basically pause it in its current state, so you can start up again at the same spot
 
@@ -37,7 +37,7 @@ This might take like 1-2 mins depending on internet speeds
 
 ### Install Dependecies
 
-> sudo apt install docker.io docker-compose-v2 curl git -y
+> sudo apt install docker.io docker-compose-plugin curl git -y
 
 ### Enable Docker
 
