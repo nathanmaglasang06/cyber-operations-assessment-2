@@ -1,0 +1,127 @@
+# =============================================================================
+# CarePlus Medical Group - ELK Stack Docker Compose
+# Assessment 2: Centralised Security Monitoring and Threat Detection
+# =============================================================================
+# Version: Elasticsearch 8.17.4, Kibana 8.17.4, Logstash 8.17.4
+# Security: DISABLED for lab/development use (xpack.security.enabled=false)
+# Memory:   Minimum 4GB RAM recommended for Elasticsearch
+# =============================================================================
+
+services:
+  # ---------------------------------------------------------------------------
+  # Elasticsearch - Search and Analytics Engine
+  # ---------------------------------------------------------------------------
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.17.4
+    container_name: careplus-elasticsearch
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enrollment.enabled=false
+      - "ES_JAVA_OPTS=-Xms2g -Xmx2g"
+      - cluster.name=careplus-cluster
+      - bootstrap.memory_lock=true
+      - network.host=0.0.0.0
+      - http.port=9200
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - es-data:/usr/share/elasticsearch/data
+      - ./elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:9200/_cluster/health || exit 1"]
+      interval: 15s
+      timeout: 10s
+      retries: 15
+      start_period: 60s
+    networks:
+      - careplus-elk
+    restart: unless-stopped
+
+  # ---------------------------------------------------------------------------
+  # Logstash - Data Processing Pipeline
+  # ---------------------------------------------------------------------------
+  logstash:
+    image: docker.elastic.co/logstash/logstash:8.17.4
+    container_name: careplus-logstash
+    environment:
+      - "LS_JAVA_OPTS=-Xms1g -Xmx1g"
+    ports:
+      - "5044:5044"
+      - "5000:5000/tcp"
+      - "5000:5000/udp"
+      - "9600:9600"
+    volumes:
+      - ./logstash/pipeline:/usr/share/logstash/pipeline:ro
+      - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml
+      - ./logs:/usr/share/logstash/logs:ro
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:9600 || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    networks:
+      - careplus-elk
+    restart: unless-stopped
+
+  # ---------------------------------------------------------------------------
+  # Kibana - Visualization and Dashboards
+  # ---------------------------------------------------------------------------
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.17.4
+    container_name: careplus-kibana
+    environment:
+      - ELASTICSEARCH_HOSTS=["http://elasticsearch:9200"]
+      - xpack.security.enabled=false
+      - server.host=0.0.0.0
+      - server.name=careplus-kibana
+      - monitoring.ui.container.elasticsearch.enabled=true
+    ports:
+      - "5601:5601"
+    volumes:
+      - ./kibana/kibana.yml:/usr/share/kibana/config/kibana.yml:ro
+      - kibana-data:/usr/share/kibana/data
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+      logstash:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:5601/api/status || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 120s
+    networks:
+      - careplus-elk
+    restart: unless-stopped
+
+# =============================================================================
+# Named Volumes
+# =============================================================================
+volumes:
+  es-data:
+    driver: local
+  kibana-data:
+    driver: local
+
+# =============================================================================
+# Networks
+# =============================================================================
+networks:
+  careplus-elk:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

@@ -1,0 +1,21 @@
+# =============================================================================
+# Elasticsearch Configuration - CarePlus Medical Group
+# =============================================================================
+# This is a single-node development configuration.
+# Security is disabled for lab assessment purposes only.
+# =============================================================================
+
+cluster.name: careplus-cluster
+node.name: careplus-es-node-01
+network.host: 0.0.0.0
+http.port: 9200
+
+# Single-node discovery (no clustering)
+discovery.type: single-node
+
+# Security disabled for assessment lab environment
+xpack.security.enabled: false
+xpack.security.enrollment.enabled: false
+
+# Monitoring
+xpack.monitoring.collection.enabled: true

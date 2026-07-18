@@ -1,0 +1,21 @@
+# =============================================================================
+# Kibana Configuration - CarePlus Medical Group
+# =============================================================================
+# Security disabled for lab assessment environment.
+# =============================================================================
+
+server.host: "0.0.0.0"
+server.name: "careplus-kibana"
+server.port: 5601
+
+# Elasticsearch connection
+elasticsearch.hosts: ["http://elasticsearch:9200"]
+
+monitoring.ui.container.elasticsearch.enabled: true
+
+# Encrypted saved objects (required for Fleet/Agent features)
+xpack.encryptedSavedObjects.encryptionKey: "careplus_secure_key_32chars_long_1234"
+
+# Fleet settings (optional - for Elastic Agent enrollment)
+xpack.fleet.enabled: true
+xpack.fleet.agents.enabled: true
