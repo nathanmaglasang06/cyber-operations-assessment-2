@@ -52,9 +52,9 @@ You can just copy paste this block into terminal (UBUNTU VM) (Mac/Linux Users us
 
 ### Enable Docker
 
-> sudo systemctl enable docker
+> sudo systemctl enable --now docker
 
-> sudo systemctl start docker
+> sudo systemctl enable --now docker.socket
 
 ### Verify docker and docker compose
 
@@ -87,7 +87,7 @@ then run the following command to start all the docker containers
 
 > sudo docker compose up -d
 
-This might take upwards of 5 minutes depending on your computer, if it takes any longer than say 20 min something is failing
+This might take upwards of 5 minutes depending on your computer, as its downloading the images i made
 
 Once that compose command has completed run a docker ps, to verify
 
