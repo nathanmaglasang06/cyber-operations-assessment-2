@@ -88,6 +88,7 @@ then run the following command to start all the docker containers
 > sudo docker compose up -d
 
 This might take upwards of 5 minutes depending on your computer, as its downloading the images i made then you should see something like
+
     ubuntuvm@ubuntuvm-Standard-PC-Q35-ICH9-2009:~/Desktop/cyber-operations-assessment-2$ sudo docker compose up -d
     [+] up 40/40
      \u2714 Image docker.elastic.co/kibana/kibana:8... Pulled  35.1s
