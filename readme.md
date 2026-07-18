@@ -128,11 +128,11 @@ Now we need to verify that elastic search can see the log files provided by the 
 
 > curl "http://localhost:9200/careplus-security-logs/_count?pretty"
 
-you should again get some JSON, here is what I get, where the count means that there have been 615 events recorded from the log files
+you should again get some JSON, here is what I get
 
 
      {
-      "count" : 615,
+      "count" : <NUMBER>,
        "_shards" : {
          "total" : 1,
          "successful" : 1,
@@ -148,13 +148,15 @@ Again in your browser go to:
 
 > http://localhost:5601
 
-It may take a minute or two on first attempt
+It may take a minute or two on first attempt, if a pop up appears to add integrations just click explore on my own
 
 ## Creating Data View 
 
 To create the Data View, on the kibana home page click the hamburger (3 horizontal lines) on the top left, scroll down to the bottomo and navigate to stack management
+
 On the left hand side under the heading kibana click on Data Views
-Create a Data View using the button on the top right using the following info
+
+Create a Data View using the button with the following info
 
 > Name: careplus-security-logs
 
@@ -169,7 +171,9 @@ Now select save data view to Kibana, the blue button at the bottom
 ## Verify Data View
 
 Click the hamburger on the top left again and scroll to the top
-Under analytics you should see discover, click that then you should be able to see all the logs available, along with a little graph at the top
+Under analytics you should see discover, click that
+
+A message may show up saying no results match your search criteria with a button that says search entire time range click that then you should be able to see all the logs available, along with a little graph at the top
 
 Thats it you should have it all setup now.
 
