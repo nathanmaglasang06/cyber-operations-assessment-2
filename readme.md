@@ -7,22 +7,23 @@ This will work on a standard Ubuntu VM, I would reccomend 12gb ram, and 6 cores 
 When you want to stop working there is no need to do docker down or anything, just suspend the ubuntu vm that will basically pause it in its current state, so you can start up again at the same spot
 
 Hey all, to replicate my docker setup you will need the following structure, this repo is formatted as such so you will just need to clone it, instructions below
-.
-├── docker-compose.yml
-├── elasticsearch
-│   └── elasticsearch.yml
-├── kibana
-│   └── kibana.yml
-├── logs
-│   ├── careplus_elk_security_logs.jsonl
-│   └── careplus_logstash_pipeline.conf
-└── logstash
-    ├── careplus_elk_security_logs.jsonl
-    ├── careplus_logstash_pipeline.conf
-    ├── config
-    │   └── logstash.yml
-    └── pipeline
-        └── logstash.conf
+
+    .
+    ├── docker-compose.yml
+    ├── elasticsearch
+    │   └── elasticsearch.yml
+    ├── kibana
+    │   └── kibana.yml
+    ├── logs
+    │   ├── careplus_elk_security_logs.jsonl
+    │   └── careplus_logstash_pipeline.conf
+    └── logstash
+        ├── careplus_elk_security_logs.jsonl
+        ├── careplus_logstash_pipeline.conf
+        ├── config
+        │   └── logstash.yml
+        └── pipeline
+            └── logstash.conf
 
 ## Update System
 
@@ -35,9 +36,11 @@ The first step is to update system:
 This might take like 1-2 mins depending on internet speeds
 
 ### Install Dependecies
+
 > sudo apt install docker.io docker-compose-v2 curl git -y
 
 ### Enable Docker
+
 > sudo systemctl enable docker
 
 > sudo systemctl start docker
@@ -84,13 +87,10 @@ Once that compose command has completed run a docker ps, to verify
 
 Example output from my system: 
 
-> CONTAINER ID   IMAGE                                                  COMMAND                  CREATED       STATUS                 PORTS                                                                                                                                                                                NAMES
-
-> 100fcb10840d   docker.elastic.co/kibana/kibana:8.17.4                 "/bin/tini -- /usr/l…"   7 hours ago   Up 7 hours (healthy)   0.0.0.0:5601->5601/tcp, [::]:5601->5601/tcp                                                                                                                                          careplus-kibana
-
-> 180069b80ced   docker.elastic.co/logstash/logstash:8.17.4             "/usr/local/bin/dock…"   7 hours ago   Up 7 hours (healthy)   0.0.0.0:5000->5000/tcp, [::]:5000->5000/tcp, 0.0.0.0:5044->5044/tcp, [::]:5044->5044/tcp, 0.0.0.0:9600->9600/tcp, 0.0.0.0:5000->5000/udp, [::]:9600->9600/tcp, [::]:5000->5000/udp   careplus-logstash
-
->0de810bfdd4e   docker.elastic.co/elasticsearch/elasticsearch:8.17.4   "/bin/tini -- /usr/l…"   7 hours ago   Up 7 hours (healthy)   0.0.0.0:9200->9200/tcp, [::]:9200->9200/tcp, 0.0.0.0:9300->9300/tcp, [::]:9300->9300/tcp                                                                                             careplus-elasticsearch
+    CONTAINER ID   IMAGE                                                  COMMAND                  CREATED       STATUS                 PORTS                                                                                                                                                                                NAMES
+    100fcb10840d   docker.elastic.co/kibana/kibana:8.17.4                 "/bin/tini -- /usr/l…"   7 hours ago   Up 7 hours (healthy)   0.0.0.0:5601->5601/tcp, [::]:5601->5601/tcp                                                                                                                                          careplus-kibana
+    180069b80ced   docker.elastic.co/logstash/logstash:8.17.4             "/usr/local/bin/dock…"   7 hours ago   Up 7 hours (healthy)   0.0.0.0:5000->5000/tcp, [::]:5000->5000/tcp, 0.0.0.0:5044->5044/tcp, [::]:5044->5044/tcp, 0.0.0.0:9600->9600/tcp, 0.0.0.0:5000->5000/udp, [::]:9600->9600/tcp, [::]:5000->5000/udp   careplus-logstash
+    0de810bfdd4e   docker.elastic.co/elasticsearch/elasticsearch:8.17.4   "/bin/tini -- /usr/l…"   7 hours ago   Up 7 hours (healthy)   0.0.0.0:9200->9200/tcp, [::]:9200->9200/tcp, 0.0.0.0:9300->9300/tcp, [::]:9300->9300/tcp                                                                                             careplus-elasticsearch
 
 ## Elastic Search
 
@@ -106,23 +106,16 @@ Now we need to verify that elastic search can see the log files provided by the 
 
 you should again get some JSON, here is what I get, where the count means that there have been 615 events recorded from the log files
 
-> {
 
->  "count" : 615,
-
->   "_shards" : {
-
->     "total" : 1,
-
->     "successful" : 1,
-
->     "skipped" : 0,
-
->     "failed" : 0
-
->   }
-
-> }
+     {
+      "count" : 615,
+       "_shards" : {
+         "total" : 1,
+         "successful" : 1,
+         "skipped" : 0,
+         "failed" : 0
+       }
+     }
 
 ## Kibana
 
