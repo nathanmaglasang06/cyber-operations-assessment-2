@@ -29,6 +29,7 @@ Hey all, to replicate my docker setup you will need the following structure, thi
 The first step is to update system:
 
 > sudo apt update
+
 > sudo apt upgrade
 
 This might take like 1-2 mins depending on internet speeds
@@ -38,11 +39,13 @@ This might take like 1-2 mins depending on internet speeds
 
 ### Enable Docker
 > sudo systemctl enable docker
+
 > sudo systemctl start docker
 
 ### Verify docker and docker compose
 
 > sudo docker --version
+
 > sudo docker compose version
 
 Should return some version numbers
@@ -60,11 +63,11 @@ To do this first verify git is installed
 
 then clone the repo
 
-> git clone ##########################################################
+> git clone https://github.com/nathanmaglasang06/cyber-operations-assessment-2.git
 
 Navigate into the cloned repo: 
 
-> cd ############################
+> cd cyber-operations-assessment-2
 
 then run the following command to start all the docker containers
 
@@ -82,8 +85,11 @@ Once that compose command has completed run a docker ps, to verify
 Example output from my system: 
 
 > CONTAINER ID   IMAGE                                                  COMMAND                  CREATED       STATUS                 PORTS                                                                                                                                                                                NAMES
+
 > 100fcb10840d   docker.elastic.co/kibana/kibana:8.17.4                 "/bin/tini -- /usr/l…"   7 hours ago   Up 7 hours (healthy)   0.0.0.0:5601->5601/tcp, [::]:5601->5601/tcp                                                                                                                                          careplus-kibana
+
 > 180069b80ced   docker.elastic.co/logstash/logstash:8.17.4             "/usr/local/bin/dock…"   7 hours ago   Up 7 hours (healthy)   0.0.0.0:5000->5000/tcp, [::]:5000->5000/tcp, 0.0.0.0:5044->5044/tcp, [::]:5044->5044/tcp, 0.0.0.0:9600->9600/tcp, 0.0.0.0:5000->5000/udp, [::]:9600->9600/tcp, [::]:5000->5000/udp   careplus-logstash
+
 >0de810bfdd4e   docker.elastic.co/elasticsearch/elasticsearch:8.17.4   "/bin/tini -- /usr/l…"   7 hours ago   Up 7 hours (healthy)   0.0.0.0:9200->9200/tcp, [::]:9200->9200/tcp, 0.0.0.0:9300->9300/tcp, [::]:9300->9300/tcp                                                                                             careplus-elasticsearch
 
 ## Elastic Search
@@ -101,13 +107,21 @@ Now we need to verify that elastic search can see the log files provided by the 
 you should again get some JSON, here is what I get, where the count means that there have been 615 events recorded from the log files
 
 > {
+
 >  "count" : 615,
+
 >   "_shards" : {
+
 >     "total" : 1,
+
 >     "successful" : 1,
+
 >     "skipped" : 0,
+
 >     "failed" : 0
+
 >   }
+
 > }
 
 ## Kibana
@@ -126,8 +140,11 @@ On the left hand side under the heading kibana click on Data Views
 Create a Data View using the button on the top right using the following info
 
 > Name: careplus-security-logs
+
 > Index Pattern: careplus-security-logs
+
 > Timestamp: @timestamp
+
 > (For timestamp, you should jsut be able to open the dropdown and select it)
 
 Now select save data view to Kibana, the blue button at the bottom
